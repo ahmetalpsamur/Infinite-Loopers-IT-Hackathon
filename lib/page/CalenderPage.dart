@@ -66,7 +66,8 @@ class _CalendarHomePageState extends State<CalendarHomePage> {
     prefs.setString('events', json.encode(_events));
   }
 
-  void _addEvent(String eventTitle, DateTime fullDate, List<String> participants, List<String> hobbies) {
+  void _addEvent(String eventTitle, DateTime fullDate,
+      List<String> participants, List<String> hobbies) {
     String dateKey = fullDate.toIso8601String().split('T')[0];
     if (_events[dateKey] == null) {
       _events[dateKey] = [];
@@ -116,7 +117,10 @@ class _CalendarHomePageState extends State<CalendarHomePage> {
             },
             eventLoader: (day) {
               String dateKey = day.toIso8601String().split('T')[0];
-              return _events[dateKey]?.map((event) => event['title']).toList() ?? [];
+              return _events[dateKey]
+                      ?.map((event) => event['title'])
+                      .toList() ??
+                  [];
             },
             calendarStyle: CalendarStyle(
               todayDecoration: BoxDecoration(
@@ -169,8 +173,8 @@ class _CalendarHomePageState extends State<CalendarHomePage> {
             title: Text(event['title']),
             subtitle: Text(
               "Time: ${DateTime.parse(event['time']).hour.toString().padLeft(2, '0')}:${DateTime.parse(event['time']).minute.toString().padLeft(2, '0')}\n"
-                  "Participants: ${(event['participants'] as List<String>).join(', ')}\n"
-                  "Hobbies: ${(event['hobbies'] as List<String>).join(', ')}",
+              "Participants: ${(event['participants'] as List<String>).join(', ')}\n"
+              "Hobbies: ${(event['hobbies'] as List<String>).join(', ')}",
             ),
             trailing: IconButton(
               icon: Icon(Icons.delete, color: Colors.indigo),
@@ -221,7 +225,8 @@ class _CalendarHomePageState extends State<CalendarHomePage> {
                     Expanded(
                       child: TextField(
                         controller: participantController,
-                        decoration: InputDecoration(hintText: 'Add Participant'),
+                        decoration:
+                            InputDecoration(hintText: 'Add Participant'),
                       ),
                     ),
                     IconButton(
@@ -291,11 +296,14 @@ class _CalendarHomePageState extends State<CalendarHomePage> {
                     pickedTime!.hour,
                     pickedTime!.minute,
                   );
-                  _addEvent(eventTitle, eventDateTime, participants, selectedHobbies);
+                  _addEvent(
+                      eventTitle, eventDateTime, participants, selectedHobbies);
                   Navigator.pop(context);
                 } else {
                   ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(content: Text('Please enter an event title and pick a time.')),
+                    SnackBar(
+                        content: Text(
+                            'Please enter an event title and pick a time.')),
                   );
                 }
               },

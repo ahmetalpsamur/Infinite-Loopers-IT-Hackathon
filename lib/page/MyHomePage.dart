@@ -9,6 +9,10 @@ class MyHomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // Get today's date
+    final today = DateTime.now();
+    final todayDay = today.day;
+
     return Scaffold(
       drawer: Drawer(
         child: ListView(
@@ -120,10 +124,10 @@ class MyHomePage extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Container(
-                width: double.infinity, // Makes the image cover the full width
+                width: double.infinity,
                 child: Image.asset(
-                  'lib/media/slide1.png', // Your image path here
-                  fit: BoxFit.cover, // Makes the image scale to cover the area
+                  'lib/media/slide1.png',
+                  fit: BoxFit.cover,
                 ),
               ),
               SizedBox(height: 20),
@@ -153,11 +157,11 @@ class MyHomePage extends StatelessWidget {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        _buildCalendarDay('Cmt', '21', true),
-                        _buildCalendarDay('Paz', '22', false),
-                        _buildCalendarDay('Pzt', '23', false),
-                        _buildCalendarDay('Sal', '24', false),
-                        _buildCalendarDay('Çar', '25', false),
+                        _buildCalendarDay('Cmt', '21', todayDay == 21, context),
+                        _buildCalendarDay('Paz', '22', todayDay == 22, context),
+                        _buildCalendarDay('Pzt', '23', todayDay == 23, context),
+                        _buildCalendarDay('Sal', '24', todayDay == 24, context),
+                        _buildCalendarDay('Çar', '25', todayDay == 25, context),
                       ],
                     ),
                     SizedBox(height: 10),
@@ -206,6 +210,16 @@ class MyHomePage extends StatelessWidget {
                   ],
                 ),
               ),
+              SizedBox(
+                height: 30,
+              ),
+              Container(
+                width: double.infinity,
+                child: Image.asset(
+                  'lib/media/ekofit.png',
+                  fit: BoxFit.cover,
+                ),
+              ),
             ],
           ),
         ),
@@ -213,21 +227,31 @@ class MyHomePage extends StatelessWidget {
     );
   }
 
-  Widget _buildCalendarDay(String day, String date, bool isSelected) {
-    return Column(
-      children: [
-        Text(day, style: TextStyle(color: Colors.grey)),
-        SizedBox(height: 5),
-        CircleAvatar(
-          backgroundColor: isSelected ? Colors.orange : Colors.grey[200],
-          child: Text(
-            date,
-            style: TextStyle(
-              color: isSelected ? Colors.white : Colors.black,
+  Widget _buildCalendarDay(
+      String day, String date, bool isSelected, BuildContext context) {
+    return GestureDetector(
+      onTap: () {
+        // Navigate to CalendarPage when clicked
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => CalendarPage()),
+        );
+      },
+      child: Column(
+        children: [
+          Text(day, style: TextStyle(color: Colors.grey)),
+          SizedBox(height: 5),
+          CircleAvatar(
+            backgroundColor: isSelected ? Colors.orange : Colors.grey[200],
+            child: Text(
+              date,
+              style: TextStyle(
+                color: isSelected ? Colors.white : Colors.black,
+              ),
             ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }
