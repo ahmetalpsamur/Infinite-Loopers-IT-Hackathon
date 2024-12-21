@@ -49,6 +49,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.19.0"
+  cupertino_icons:
+    dependency: "direct main"
+    description:
+      name: cupertino_icons
+      sha256: ba631d1c7f7bef6b729a622b7b752645a2d076dba9976925b8f25725a30e1ee6
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.0.8"
   fake_async:
     dependency: transitive
     description:
@@ -104,7 +112,6 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
-<<<<<<< HEAD
   http:
     dependency: transitive
     description:
@@ -121,7 +128,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "4.1.1"
-=======
   intl:
     dependency: transitive
     description:
@@ -130,7 +136,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.19.0"
->>>>>>> b8bf31a7d774a68e8a77bc4e1147c863805f286a
   leak_tracker:
     dependency: transitive
     description:
