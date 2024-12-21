@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'homepage.dart';
+import 'package:infiniteloopers/page/MyHomePage.dart';
 
 class LoginPage extends StatelessWidget {
   @override
