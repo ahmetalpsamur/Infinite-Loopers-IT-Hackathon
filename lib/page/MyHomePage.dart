@@ -4,8 +4,15 @@ import 'package:infiniteloopers/page/MyProfilePage.dart';
 import 'package:infiniteloopers/page/OasisPage.dart';
 import 'package:infiniteloopers/page/libraryPage.dart';
 
-class MyHomePage extends StatelessWidget {
+class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key});
+
+  @override
+  State<MyHomePage> createState() => _MyHomePageState();
+}
+
+class _MyHomePageState extends State<MyHomePage> {
+  bool _isChatOpen = false;
 
   @override
   Widget build(BuildContext context) {
@@ -14,46 +21,65 @@ class MyHomePage extends StatelessWidget {
     final todayDay = today.day;
 
     return Scaffold(
-      drawer: Drawer(
-        child: ListView(
-          padding: EdgeInsets.zero,
-          children: [
-            DrawerHeader(
-              decoration: BoxDecoration(
-                color: Colors.orange,
+      drawer: _buildDrawer(context),
+      appBar: _buildAppBar(context),
+      body: Stack(
+        children: [
+          SingleChildScrollView(
+            child: Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  _buildHeaderImage(),
+                  const SizedBox(height: 20),
+                  _buildSectionTitle('Etkinlik Takvimi'),
+                  const SizedBox(height: 10),
+                  _buildCalendar(),
+                  const SizedBox(height: 20),
+                  _buildSectionTitle('CAM Restoran'),
+                  const SizedBox(height: 10),
+                  _buildRestaurantCard(),
+                ],
               ),
-              child: Text(
-                'Menü',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 24,
-                ),
-              ),
             ),
-            ListTile(
-              leading: Icon(Icons.home),
-              title: Text('Ana Sayfa'),
-              onTap: () {},
+          ),
+          _buildChatButtonOrWindow(),
+        ],
+      ),
+    );
+  }
+
+  Drawer _buildDrawer(BuildContext context) {
+    return Drawer(
+      child: ListView(
+        padding: EdgeInsets.zero,
+        children: [
+          const DrawerHeader(
+            decoration: BoxDecoration(color: Colors.orange),
+            child: Text(
+              'Menü',
+              style: TextStyle(color: Colors.white, fontSize: 24),
             ),
-            ListTile(
-              leading: Icon(Icons.calendar_today),
-              title: Text('Ajandam'),
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => CalendarPage()),
-                );
-              },
+          ),
+          _buildDrawerItem(
+              context, Icons.home, 'Ana Sayfa', () {}), // Example handler
+          _buildDrawerItem(
+            context,
+            Icons.calendar_today,
+            'Ajandam',
+                () => Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => CalendarPage()),
             ),
-            ListTile(
-              leading: Icon(Icons.update),
-              title: Text('Oasis 2.0'),
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => OasisPage()),
-                );
-              },
+          ),
+          _buildDrawerItem(
+            context,
+            Icons.update,
+            'Oasis 2.0',
+                () => Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => OasisPage()),
             ),
             ListTile(
               leading: Icon(Icons.local_library),
@@ -124,10 +150,10 @@ class MyHomePage extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Container(
-                width: double.infinity,
+                width: double.infinity, // Makes the image cover the full width
                 child: Image.asset(
-                  'lib/media/slide1.png',
-                  fit: BoxFit.cover,
+                  'lib/media/slide1.png', // Your image path here
+                  fit: BoxFit.cover, // Makes the image scale to cover the area
                 ),
               ),
               SizedBox(height: 20),
@@ -157,11 +183,11 @@ class MyHomePage extends StatelessWidget {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        _buildCalendarDay('Cmt', '21', todayDay == 21, context),
-                        _buildCalendarDay('Paz', '22', todayDay == 22, context),
-                        _buildCalendarDay('Pzt', '23', todayDay == 23, context),
-                        _buildCalendarDay('Sal', '24', todayDay == 24, context),
-                        _buildCalendarDay('Çar', '25', todayDay == 25, context),
+                        _buildCalendarDay('Cmt', '21', true),
+                        _buildCalendarDay('Paz', '22', false),
+                        _buildCalendarDay('Pzt', '23', false),
+                        _buildCalendarDay('Sal', '24', false),
+                        _buildCalendarDay('Çar', '25', false),
                       ],
                     ),
                     SizedBox(height: 10),
@@ -210,16 +236,6 @@ class MyHomePage extends StatelessWidget {
                   ],
                 ),
               ),
-              SizedBox(
-                height: 30,
-              ),
-              Container(
-                width: double.infinity,
-                child: Image.asset(
-                  'lib/media/ekofit.png',
-                  fit: BoxFit.cover,
-                ),
-              ),
             ],
           ),
         ),
@@ -227,31 +243,30 @@ class MyHomePage extends StatelessWidget {
     );
   }
 
-  Widget _buildCalendarDay(
-      String day, String date, bool isSelected, BuildContext context) {
-    return GestureDetector(
-      onTap: () {
-        // Navigate to CalendarPage when clicked
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => CalendarPage()),
-        );
-      },
-      child: Column(
-        children: [
-          Text(day, style: TextStyle(color: Colors.grey)),
-          SizedBox(height: 5),
-          CircleAvatar(
-            backgroundColor: isSelected ? Colors.orange : Colors.grey[200],
-            child: Text(
-              date,
-              style: TextStyle(
-                color: isSelected ? Colors.white : Colors.black,
-              ),
+  Widget _buildCalendarDay(String day, String date, bool isSelected) {
+    return Column(
+      children: [
+        Text(day, style: TextStyle(color: Colors.grey)),
+        SizedBox(height: 5),
+        CircleAvatar(
+          backgroundColor: isSelected ? Colors.orange : Colors.grey[200],
+          child: Text(
+            date,
+            style: TextStyle(
+              color: isSelected ? Colors.white : Colors.black,
             ),
           ),
-        ],
-      ),
+        ),
+      ],
+    );
+  }
+
+  ListTile _buildDrawerItem(
+      BuildContext context, IconData icon, String title, VoidCallback onTap) {
+    return ListTile(
+      leading: Icon(icon),
+      title: Text(title),
+      onTap: onTap,
     );
   }
 }
