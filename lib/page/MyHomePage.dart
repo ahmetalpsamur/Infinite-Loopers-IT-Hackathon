@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:infiniteloopers/page/CalenderPage.dart';
 import 'package:infiniteloopers/page/MyProfilePage.dart';
 import 'package:infiniteloopers/page/OasisPage.dart';
 import 'package:infiniteloopers/page/libraryPage.dart';
@@ -33,7 +34,12 @@ class MyHomePage extends StatelessWidget {
             ListTile(
               leading: Icon(Icons.calendar_today),
               title: Text('Ajandam'),
-              onTap: () {},
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => CalendarPage()),
+                );
+              },
             ),
             ListTile(
               leading: Icon(Icons.update),
