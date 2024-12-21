@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+
 class OasisPage extends StatelessWidget {
+  const OasisPage({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

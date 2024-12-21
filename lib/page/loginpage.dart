@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:infiniteloopers/page/MyHomePage.dart';
 
 class LoginPage extends StatelessWidget {
+  const LoginPage({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -13,11 +16,10 @@ class LoginPage extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            // Replace this Container with your SVG logo widget
-            Container(
-              height: 100,
-              child:
-                  Placeholder(), // Replace with SvgPicture.asset('assets/logo.svg'),
+            SvgPicture.asset(
+              'lib/media/my_ieu.svg',
+              height: 100, // Adjust the size as needed
+              fit: BoxFit.contain,
             ),
             SizedBox(height: 20),
             TextField(

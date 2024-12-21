@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
 class libraryPage extends StatelessWidget {
+  const libraryPage({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -19,8 +21,7 @@ class libraryPage extends StatelessWidget {
             SizedBox(height: 20),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-              ],
+              children: [],
             ),
             SizedBox(height: 20),
             Row(

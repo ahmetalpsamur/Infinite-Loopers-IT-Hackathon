@@ -2,7 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:infiniteloopers/page/MyProfilePage.dart';
 import 'package:infiniteloopers/page/OasisPage.dart';
 import 'package:infiniteloopers/page/libraryPage.dart';
+
 class MyHomePage extends StatelessWidget {
+  const MyHomePage({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

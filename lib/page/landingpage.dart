@@ -8,6 +8,8 @@ class LandingPage extends StatelessWidget {
     'Start your journey now.',
   ];
 
+  LandingPage({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
