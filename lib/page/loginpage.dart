@@ -9,7 +9,7 @@ class LoginPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Login'),
+        title: Text('Giriş Yap'),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -31,7 +31,7 @@ class LoginPage extends StatelessWidget {
             SizedBox(height: 10),
             TextField(
               decoration: InputDecoration(
-                labelText: 'Password',
+                labelText: 'Şifrenizi Girin',
                 border: OutlineInputBorder(),
               ),
               obscureText: true,
@@ -44,7 +44,7 @@ class LoginPage extends StatelessWidget {
                   MaterialPageRoute(builder: (context) => MyHomePage()),
                 );
               },
-              child: Text('Login'),
+              child: Text('Giriş Yap'),
             ),
           ],
         ),

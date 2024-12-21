@@ -3,9 +3,9 @@ import 'loginpage.dart';
 
 class LandingPage extends StatelessWidget {
   final List<String> slideTexts = [
-    'Welcome to MyApp!',
-    'Discover exciting features.',
-    'Start your journey now.',
+    "MyIEU'ye Hoş Geldiniz!",
+    'İhtiyacınız Olan Bilgiler Yanınıza.',
+    'Lütfen Giriş Yapın.',
   ];
 
   LandingPage({super.key});
@@ -21,7 +21,10 @@ class LandingPage extends StatelessWidget {
             children: [
               Text(
                 slideTexts[index],
-                style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                style: TextStyle(
+                    color: Colors.orange,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 30),
                 textAlign: TextAlign.center,
               ),
               SizedBox(height: 20),
@@ -33,7 +36,12 @@ class LandingPage extends StatelessWidget {
                       MaterialPageRoute(builder: (context) => LoginPage()),
                     );
                   },
-                  child: Text('Get Started'),
+                  child: Text(
+                    'Başlayalım!',
+                    style: TextStyle(
+                      color: Colors.black,
+                    ),
+                  ),
                 ),
             ],
           );
