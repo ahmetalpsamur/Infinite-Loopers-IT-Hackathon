@@ -11,15 +11,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-<<<<<<< HEAD
-
-=======
   shared_preferences: ^2.0.18
-
-  # The following adds the Cupertino Icons font to your application.
-  # Use with the CupertinoIcons class for iOS style icons.
->>>>>>> 8dcd67ca0729df8cb50a9c3da6ed4491ff1907c8
-  cupertino_icons: ^1.0.8
   flutter_svg: ^2.0.16
 
 dev_dependencies:
@@ -32,3 +24,4 @@ flutter:
 
   assets:
     - lib/media/my_ieu.svg
+    - lib/media/slide1.png

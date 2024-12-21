@@ -15,10 +15,10 @@ class MyHomePage extends StatelessWidget {
           children: [
             DrawerHeader(
               decoration: BoxDecoration(
-                color: Colors.blue,
+                color: Colors.orange,
               ),
               child: Text(
-                'myIEU Menu',
+                'Menü',
                 style: TextStyle(
                   color: Colors.white,
                   fontSize: 24,
@@ -36,11 +36,6 @@ class MyHomePage extends StatelessWidget {
               onTap: () {},
             ),
             ListTile(
-              leading: Icon(Icons.support),
-              title: Text('Destek'),
-              onTap: () {},
-            ),
-            ListTile(
               leading: Icon(Icons.update),
               title: Text('Oasis 2.0'),
               onTap: () {
@@ -52,7 +47,7 @@ class MyHomePage extends StatelessWidget {
             ),
             ListTile(
               leading: Icon(Icons.local_library),
-              title: Text('Library'),
+              title: Text('Kütüphane'),
               onTap: () {
                 Navigator.push(
                   context,
@@ -60,11 +55,30 @@ class MyHomePage extends StatelessWidget {
                 );
               },
             ),
+            ListTile(
+              leading: Icon(Icons.update),
+              title: Text('QR Kodunuzu Oluşturun'),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => OasisPage()),
+                );
+              },
+            ),
+            ListTile(
+              leading: Icon(Icons.support),
+              title: Text('Destek'),
+              onTap: () {},
+            ),
           ],
         ),
       ),
       appBar: AppBar(
-        title: Text('Hoşgeldiniz'),
+        backgroundColor: Colors.orange.shade600,
+        title: Text(
+          'MyIEU',
+          style: TextStyle(color: Colors.white, fontWeight: FontWeight.w700),
+        ),
         actions: [
           PopupMenuButton<String>(
             onSelected: (value) {
@@ -77,16 +91,16 @@ class MyHomePage extends StatelessWidget {
                 // Handle log out
               }
             },
-            icon: Icon(Icons.account_circle, color: Colors.white),
+            icon: Icon(Icons.account_circle, color: Colors.black),
             itemBuilder: (BuildContext context) {
               return [
                 PopupMenuItem(
                   value: 'My Profile',
-                  child: Text('My Profile'),
+                  child: Text('Profilim'),
                 ),
                 PopupMenuItem(
                   value: 'Log Out',
-                  child: Text('Log Out'),
+                  child: Text('Çıkış Yap'),
                 ),
               ];
             },
@@ -100,26 +114,10 @@ class MyHomePage extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Container(
-                padding: EdgeInsets.all(16),
-                decoration: BoxDecoration(
-                  color: Colors.blue[50],
-                  borderRadius: BorderRadius.circular(8),
-                ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      'Tek tıkla QR kodunuzu tasarlayın!',
-                      style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w500,
-                      ),
-                    ),
-                    Icon(
-                      Icons.qr_code,
-                      color: Colors.blue,
-                    ),
-                  ],
+                width: double.infinity, // Makes the image cover the full width
+                child: Image.asset(
+                  'lib/media/slide1.png', // Your image path here
+                  fit: BoxFit.cover, // Makes the image scale to cover the area
                 ),
               ),
               SizedBox(height: 20),
