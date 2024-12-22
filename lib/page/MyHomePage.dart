@@ -16,10 +16,6 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    // Get today's date
-    final today = DateTime.now();
-    final todayDay = today.day;
-
     return Scaffold(
       drawer: _buildDrawer(context),
       appBar: _buildAppBar(context),
@@ -62,13 +58,12 @@ class _MyHomePageState extends State<MyHomePage> {
               style: TextStyle(color: Colors.white, fontSize: 24),
             ),
           ),
-          _buildDrawerItem(
-              context, Icons.home, 'Ana Sayfa', () {}), // Example handler
+          _buildDrawerItem(context, Icons.home, 'Ana Sayfa', () {}),
           _buildDrawerItem(
             context,
             Icons.calendar_today,
             'Ajandam',
-                () => Navigator.push(
+            () => Navigator.push(
               context,
               MaterialPageRoute(builder: (context) => CalendarPage()),
             ),
@@ -77,168 +72,89 @@ class _MyHomePageState extends State<MyHomePage> {
             context,
             Icons.update,
             'Oasis 2.0',
-                () => Navigator.push(
+            () => Navigator.push(
               context,
               MaterialPageRoute(builder: (context) => OasisPage()),
             ),
-            ListTile(
-              leading: Icon(Icons.local_library),
-              title: Text('Kütüphane'),
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => LibraryPage()),
-                );
-              },
+          ),
+          _buildDrawerItem(
+            context,
+            Icons.local_library,
+            'Kütüphane',
+            () => Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => LibraryPage()),
             ),
-            ListTile(
-              leading: Icon(Icons.update),
-              title: Text('QR Kodunuzu Oluşturun'),
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => OasisPage()),
-                );
-              },
+          ),
+          _buildDrawerItem(
+            context,
+            Icons.update,
+            'QR Kodunuzu Oluşturun',
+            () => Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => OasisPage()),
             ),
-            ListTile(
-              leading: Icon(Icons.support),
-              title: Text('Destek'),
-              onTap: () {},
-            ),
-          ],
-        ),
-      ),
-      appBar: AppBar(
-        backgroundColor: Colors.orange.shade600,
-        title: Text(
-          'MyIEU',
-          style: TextStyle(color: Colors.white, fontWeight: FontWeight.w700),
-        ),
-        actions: [
-          PopupMenuButton<String>(
-            onSelected: (value) {
-              if (value == 'My Profile') {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => MyProfilePage()),
-                );
-              } else if (value == 'Log Out') {
-                // Handle log out
-              }
-            },
-            icon: Icon(Icons.account_circle, color: Colors.black),
-            itemBuilder: (BuildContext context) {
-              return [
-                PopupMenuItem(
-                  value: 'My Profile',
-                  child: Text('Profilim'),
-                ),
-                PopupMenuItem(
-                  value: 'Log Out',
-                  child: Text('Çıkış Yap'),
-                ),
-              ];
-            },
+          ),
+          _buildDrawerItem(
+            context,
+            Icons.support,
+            'Destek',
+            () {},
           ),
         ],
       ),
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+    );
+  }
+
+  Widget _buildHeaderImage() {
+    return Container(
+      width: double.infinity,
+      child: Image.asset(
+        'lib/media/slide1.png',
+        fit: BoxFit.cover,
+      ),
+    );
+  }
+
+  Widget _buildSectionTitle(String title) {
+    return Text(
+      title,
+      style: TextStyle(
+        fontSize: 18,
+        fontWeight: FontWeight.bold,
+      ),
+    );
+  }
+
+  Widget _buildCalendar() {
+    return Container(
+      padding: EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(8),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.grey.withOpacity(0.2),
+            blurRadius: 6,
+            offset: Offset(0, 3),
+          ),
+        ],
+      ),
+      child: Column(
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Container(
-                width: double.infinity, // Makes the image cover the full width
-                child: Image.asset(
-                  'lib/media/slide1.png', // Your image path here
-                  fit: BoxFit.cover, // Makes the image scale to cover the area
-                ),
-              ),
-              SizedBox(height: 20),
-              Text(
-                'Etkinlik Takvimi',
-                style: TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              SizedBox(height: 10),
-              Container(
-                padding: EdgeInsets.all(16),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(8),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.grey.withOpacity(0.2),
-                      blurRadius: 6,
-                      offset: Offset(0, 3),
-                    ),
-                  ],
-                ),
-                child: Column(
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        _buildCalendarDay('Cmt', '21', true),
-                        _buildCalendarDay('Paz', '22', false),
-                        _buildCalendarDay('Pzt', '23', false),
-                        _buildCalendarDay('Sal', '24', false),
-                        _buildCalendarDay('Çar', '25', false),
-                      ],
-                    ),
-                    SizedBox(height: 10),
-                    Text('Bugün için etkinlik yok.'),
-                  ],
-                ),
-              ),
-              SizedBox(height: 20),
-              Text(
-                'CAM Restoran',
-                style: TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              SizedBox(height: 10),
-              Container(
-                padding: EdgeInsets.all(16),
-                decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    colors: [Colors.pink, Colors.redAccent],
-                    begin: Alignment.topLeft,
-                    end: Alignment.bottomRight,
-                  ),
-                  borderRadius: BorderRadius.circular(8),
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      'Usta şeflerimizin özenle hazırladığı menümüzde, her damak zevkine uygun seçenekler bulunmaktadır.',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 14,
-                      ),
-                    ),
-                    SizedBox(height: 10),
-                    ElevatedButton(
-                      onPressed: () {},
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.white,
-                        foregroundColor: Colors.redAccent,
-                      ),
-                      child: Text('Reservasyon Yap'),
-                    ),
-                  ],
-                ),
-              ),
+              _buildCalendarDay('Cmt', '21', true),
+              _buildCalendarDay('Paz', '22', false),
+              _buildCalendarDay('Pzt', '23', false),
+              _buildCalendarDay('Sal', '24', false),
+              _buildCalendarDay('Çar', '25', false),
             ],
           ),
-        ),
+          SizedBox(height: 10),
+          Text('Bugün için etkinlik yok.'),
+        ],
       ),
     );
   }
@@ -261,12 +177,99 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
+  Widget _buildRestaurantCard() {
+    return Container(
+      padding: EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          colors: [Colors.pink, Colors.redAccent],
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+        ),
+        borderRadius: BorderRadius.circular(8),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            'Usta şeflerimizin özenle hazırladığı menümüzde, her damak zevkine uygun seçenekler bulunmaktadır.',
+            style: TextStyle(
+              color: Colors.white,
+              fontSize: 14,
+            ),
+          ),
+          SizedBox(height: 10),
+          ElevatedButton(
+            onPressed: () {},
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Colors.white,
+              foregroundColor: Colors.redAccent,
+            ),
+            child: Text('Reservasyon Yap'),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildChatButtonOrWindow() {
+    return Positioned(
+      bottom: 20,
+      right: 20,
+      child: FloatingActionButton(
+        onPressed: () {
+          setState(() {
+            _isChatOpen = !_isChatOpen;
+          });
+        },
+        child: Icon(_isChatOpen ? Icons.close : Icons.chat),
+      ),
+    );
+  }
+
   ListTile _buildDrawerItem(
       BuildContext context, IconData icon, String title, VoidCallback onTap) {
     return ListTile(
       leading: Icon(icon),
       title: Text(title),
       onTap: onTap,
+    );
+  }
+
+  AppBar _buildAppBar(BuildContext context) {
+    return AppBar(
+      backgroundColor: Colors.orange.shade600,
+      title: Text(
+        'MyIEU',
+        style: TextStyle(color: Colors.white, fontWeight: FontWeight.w700),
+      ),
+      actions: [
+        PopupMenuButton<String>(
+          onSelected: (value) {
+            if (value == 'My Profile') {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => MyProfilePage()),
+              );
+            } else if (value == 'Log Out') {
+              // Handle log out
+            }
+          },
+          icon: Icon(Icons.account_circle, color: Colors.black),
+          itemBuilder: (BuildContext context) {
+            return [
+              PopupMenuItem(
+                value: 'My Profile',
+                child: Text('Profilim'),
+              ),
+              PopupMenuItem(
+                value: 'Log Out',
+                child: Text('Çıkış Yap'),
+              ),
+            ];
+          },
+        ),
+      ],
     );
   }
 }
