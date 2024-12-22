@@ -326,6 +326,11 @@ class _MyHomePageState extends State<MyHomePage> {
                     isBot: true,
                   ),
                   const SizedBox(height: 10),
+                  const ChatBubble(
+                    message: 'Dersi ver lan bana',
+                    isBot: false,
+                  ),
+                  const SizedBox(height: 10),
                 ],
               ),
             ),
