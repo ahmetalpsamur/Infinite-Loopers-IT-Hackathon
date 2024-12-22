@@ -10,10 +10,10 @@ class CalendarPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'Calendar App',
+      title: 'Takvim',
       theme: ThemeData(
         useMaterial3: true,
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.indigo),
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.white),
       ),
       home: CalendarHomePage(),
     );
@@ -98,7 +98,7 @@ class _CalendarHomePageState extends State<CalendarHomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Modern Calendar'),
+        title: Text('Takvim'),
         centerTitle: true,
       ),
       body: Column(
@@ -128,11 +128,11 @@ class _CalendarHomePageState extends State<CalendarHomePage> {
             },
             calendarStyle: CalendarStyle(
               todayDecoration: BoxDecoration(
-                color: Colors.indigoAccent,
+                color: Colors.orange.shade100,
                 shape: BoxShape.circle,
               ),
               selectedDecoration: BoxDecoration(
-                color: Colors.indigo,
+                color: Colors.orange,
                 shape: BoxShape.circle,
               ),
               markerDecoration: BoxDecoration(
@@ -161,8 +161,8 @@ class _CalendarHomePageState extends State<CalendarHomePage> {
     if (events.isEmpty) {
       return Center(
         child: Text(
-          'No events for this day.',
-          style: TextStyle(fontSize: 16, color: Colors.grey),
+          'Bugün için etkinlik yok.',
+          style: TextStyle(fontSize: 16, color: Colors.black),
         ),
       );
     }
@@ -176,9 +176,9 @@ class _CalendarHomePageState extends State<CalendarHomePage> {
           child: ListTile(
             title: Text(event['title']),
             subtitle: Text(
-              "Time: ${DateTime.parse(event['time']).hour.toString().padLeft(2, '0')}:${DateTime.parse(event['time']).minute.toString().padLeft(2, '0')}\n"
-              "Participants: ${(event['participants'] as List<String>).join(', ')}\n"
-              "Hobbies: ${(event['hobbies'] as List<String>).join(', ')}",
+              "Zaman: ${DateTime.parse(event['time']).hour.toString().padLeft(2, '0')}:${DateTime.parse(event['time']).minute.toString().padLeft(2, '0')}\n"
+              "Katılımcılar: ${(event['participants'] as List<String>).join(', ')}\n"
+              "Hobiler: ${(event['hobbies'] as List<String>).join(', ')}",
             ),
             trailing: IconButton(
               icon: Icon(Icons.delete, color: Colors.indigo),
@@ -201,14 +201,14 @@ class _CalendarHomePageState extends State<CalendarHomePage> {
       context: context,
       builder: (context) => StatefulBuilder(
         builder: (context, setState) => AlertDialog(
-          title: Text('Add Event'),
+          title: Text('Etkinlik Ekle.'),
           content: SingleChildScrollView(
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
                 TextField(
                   controller: eventTitleController,
-                  decoration: InputDecoration(hintText: 'Event Title'),
+                  decoration: InputDecoration(hintText: 'Etkinlik Adı'),
                 ),
                 SizedBox(height: 10),
                 ElevatedButton(
@@ -219,10 +219,10 @@ class _CalendarHomePageState extends State<CalendarHomePage> {
                     );
                     setState(() {});
                   },
-                  child: Text('Pick Time'),
+                  child: Text('Zaman Seçin'),
                 ),
                 if (pickedTime != null)
-                  Text('Selected Time: ${pickedTime!.format(context)}'),
+                  Text('Zaman: ${pickedTime!.format(context)}'),
                 SizedBox(height: 10),
                 Row(
                   children: [
@@ -230,7 +230,7 @@ class _CalendarHomePageState extends State<CalendarHomePage> {
                       child: TextField(
                         controller: participantController,
                         decoration:
-                            InputDecoration(hintText: 'Add Participant'),
+                            InputDecoration(hintText: 'Katılımcı Ekle:'),
                       ),
                     ),
                     IconButton(
@@ -251,7 +251,7 @@ class _CalendarHomePageState extends State<CalendarHomePage> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       SizedBox(height: 10),
-                      Text('Participants:'),
+                      Text('Katılımcılar:'),
                       ...participants.map((p) => Text('- $p')),
                     ],
                   ),
@@ -287,7 +287,7 @@ class _CalendarHomePageState extends State<CalendarHomePage> {
           actions: [
             ElevatedButton(
               onPressed: () => Navigator.pop(context),
-              child: Text('Cancel'),
+              child: Text('İptal'),
             ),
             ElevatedButton(
               onPressed: () {
@@ -305,13 +305,11 @@ class _CalendarHomePageState extends State<CalendarHomePage> {
                   Navigator.pop(context);
                 } else {
                   ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
-                        content: Text(
-                            'Please enter an event title and pick a time.')),
+                    SnackBar(content: Text('Etkinlik ve zaman gir.')),
                   );
                 }
               },
-              child: Text('Add Event'),
+              child: Text('Etkinlik Ekle'),
             ),
           ],
         ),
