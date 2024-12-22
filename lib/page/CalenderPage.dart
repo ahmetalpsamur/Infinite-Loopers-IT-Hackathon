@@ -32,25 +32,17 @@ class _CalendarHomePageState extends State<CalendarHomePage> {
   Map<String, List<Map<String, dynamic>>> _events = {};
   DateTime _selectedDate = DateTime.now();
   List<String> hobbies = [
-    "Reading",
-    "Gaming",
-    "Programming",
-    "Swimming",
-    "Traveling",
-    "Music",
-    "Photography",
-    "Cooking",
-    "Drawing",
-    "Sports",
-    "Writing",
-    "Dancing"
+    "Reading", "Gaming", "Programming", "Swimming", "Traveling",
+    "Music", "Photography", "Cooking", "Drawing", "Sports", "Writing", "Dancing"
   ];
+  List<String> participants = [];
   List<String> selectedHobbies = [];
 
   @override
   void initState() {
     super.initState();
     _loadEvents();
+    _loadParticipants();
   }
 
   Future<void> _loadEvents() async {
@@ -65,9 +57,24 @@ class _CalendarHomePageState extends State<CalendarHomePage> {
     }
   }
 
+  Future<void> _loadParticipants() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? storedParticipants = prefs.getString('participants');
+    if (storedParticipants != null) {
+      setState(() {
+        participants = List<String>.from(json.decode(storedParticipants));
+      });
+    }
+  }
+
   Future<void> _saveEvents() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.setString('events', json.encode(_events));
+  }
+
+  Future<void> _saveParticipants() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setString('participants', json.encode(participants));
   }
 
   void _addEvent(String eventTitle, DateTime fullDate,
@@ -94,107 +101,130 @@ class _CalendarHomePageState extends State<CalendarHomePage> {
     _saveEvents();
   }
 
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Takvim'),
-        centerTitle: true,
-      ),
-      body: Column(
-        children: [
-          TableCalendar(
-            focusedDay: _selectedDate,
-            firstDay: DateTime(2000),
-            lastDay: DateTime(2100),
-            calendarFormat: _calendarFormat,
-            selectedDayPredicate: (day) => isSameDay(_selectedDate, day),
-            onDaySelected: (selectedDay, focusedDay) {
-              setState(() {
-                _selectedDate = selectedDay;
-              });
-            },
-            onFormatChanged: (format) {
-              setState(() {
-                _calendarFormat = format;
-              });
-            },
-            eventLoader: (day) {
-              String dateKey = day.toIso8601String().split('T')[0];
-              return _events[dateKey]
-                      ?.map((event) => event['title'])
-                      .toList() ??
-                  [];
-            },
-            calendarStyle: CalendarStyle(
-              todayDecoration: BoxDecoration(
-                color: Colors.orange.shade100,
-                shape: BoxShape.circle,
-              ),
-              selectedDecoration: BoxDecoration(
-                color: Colors.orange,
-                shape: BoxShape.circle,
-              ),
-              markerDecoration: BoxDecoration(
-                color: Colors.orange,
-                shape: BoxShape.circle,
-              ),
-            ),
-          ),
-          const SizedBox(height: 20),
-          Expanded(
-            child: _buildEventList(),
-          ),
-        ],
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _showAddEventDialog,
-        child: Icon(Icons.add),
-      ),
-    );
-  }
+  void _showAddParticipantsDialog(BuildContext context) {
+    List<String> friends = [
+      "Ali", "Bora", "Ceyda"
+    ]; // Replace with dynamic friend list if needed
+    List<String> selectedParticipants = [];
+    TextEditingController searchController = TextEditingController();
 
-  Widget _buildEventList() {
-    String dateKey = _selectedDate.toIso8601String().split('T')[0];
-    List events = _events[dateKey] ?? [];
-
-    if (events.isEmpty) {
-      return Center(
-        child: Text(
-          'Bugün için etkinlik yok.',
-          style: TextStyle(fontSize: 16, color: Colors.black),
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+      ),
+      builder: (context) => StatefulBuilder(
+        builder: (context, setState) => Padding(
+          padding: EdgeInsets.fromLTRB(16, 16, 16, MediaQuery.of(context).viewInsets.bottom),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text(
+                'Arkadaşlar Ekle',
+                style: TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              SizedBox(height: 10),
+              TextField(
+                controller: searchController,
+                decoration: InputDecoration(
+                  hintText: 'Arkadaş Ara',
+                  prefixIcon: Icon(Icons.search),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                ),
+                onChanged: (value) {
+                  setState(() {});
+                },
+              ),
+              SizedBox(height: 10),
+              Wrap(
+                spacing: 8,
+                children: selectedParticipants.map((participant) {
+                  return Chip(
+                    label: Text(participant),
+                    onDeleted: () {
+                      setState(() {
+                        selectedParticipants.remove(participant);
+                      });
+                    },
+                  );
+                }).toList(),
+              ),
+              Expanded(
+                child: ListView(
+                  children: friends
+                      .where((friend) =>
+                      friend
+                          .toLowerCase()
+                          .contains(searchController.text.toLowerCase()))
+                      .map(
+                        (friend) => ListTile(
+                      title: Text(friend),
+                      trailing: IconButton(
+                        icon: Icon(
+                          selectedParticipants.contains(friend)
+                              ? Icons.check_circle
+                              : Icons.add_circle,
+                          color: selectedParticipants.contains(friend)
+                              ? Colors.green
+                              : Colors.blue,
+                        ),
+                        onPressed: () {
+                          setState(() {
+                            if (selectedParticipants.contains(friend)) {
+                              selectedParticipants.remove(friend);
+                            } else {
+                              selectedParticipants.add(friend);
+                            }
+                          });
+                        },
+                      ),
+                    ),
+                  )
+                      .toList(),
+                ),
+              ),
+              SizedBox(height: 10),
+              ElevatedButton(
+                onPressed: () {
+                  Navigator.pop(context, selectedParticipants);
+                },
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.indigo,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                ),
+                child: Padding(
+                  padding: EdgeInsets.symmetric(vertical: 12, horizontal: 20),
+                  child: Text(
+                    'Ekle',
+                    style: TextStyle(fontSize: 16, color: Colors.white70),
+                  ),
+                ),
+              ),
+            ],
+          ),
         ),
-      );
-    }
-
-    return ListView.builder(
-      itemCount: events.length,
-      itemBuilder: (context, index) {
-        var event = events[index];
-        return Card(
-          margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
-          child: ListTile(
-            title: Text(event['title']),
-            subtitle: Text(
-              "Zaman: ${DateTime.parse(event['time']).hour.toString().padLeft(2, '0')}:${DateTime.parse(event['time']).minute.toString().padLeft(2, '0')}\n"
-              "Katılımcılar: ${(event['participants'] as List<String>).join(', ')}\n"
-              "Hobiler: ${(event['hobbies'] as List<String>).join(', ')}",
-            ),
-            trailing: IconButton(
-              icon: Icon(Icons.delete, color: Colors.indigo),
-              onPressed: () => _removeEvent(dateKey, index),
-            ),
-          ),
-        );
-      },
-    );
+      ),
+    ).then((selected) {
+      if (selected != null && selected is List<String>) {
+        setState(() {
+          participants = selected;
+        });
+        _saveParticipants();
+      }
+    });
   }
 
   void _showAddEventDialog() {
     TimeOfDay? pickedTime;
-    List<String> participants = [];
     List<String> selectedHobbies = [];
-    TextEditingController participantController = TextEditingController();
     TextEditingController eventTitleController = TextEditingController();
 
     showDialog(
@@ -224,27 +254,11 @@ class _CalendarHomePageState extends State<CalendarHomePage> {
                 if (pickedTime != null)
                   Text('Zaman: ${pickedTime!.format(context)}'),
                 SizedBox(height: 10),
-                Row(
-                  children: [
-                    Expanded(
-                      child: TextField(
-                        controller: participantController,
-                        decoration:
-                            InputDecoration(hintText: 'Katılımcı Ekle:'),
-                      ),
-                    ),
-                    IconButton(
-                      icon: Icon(Icons.add),
-                      onPressed: () {
-                        if (participantController.text.isNotEmpty) {
-                          setState(() {
-                            participants.add(participantController.text);
-                            participantController.clear();
-                          });
-                        }
-                      },
-                    ),
-                  ],
+                ElevatedButton(
+                  onPressed: () {
+                    _showAddParticipantsDialog(context);
+                  },
+                  child: Text('Katılımcıları Ekle'),
                 ),
                 if (participants.isNotEmpty)
                   Column(
@@ -314,6 +328,101 @@ class _CalendarHomePageState extends State<CalendarHomePage> {
           ],
         ),
       ),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Takvim'),
+        centerTitle: true,
+      ),
+      body: Column(
+        children: [
+          TableCalendar(
+            focusedDay: _selectedDate,
+            firstDay: DateTime(2000),
+            lastDay: DateTime(2100),
+            calendarFormat: _calendarFormat,
+            selectedDayPredicate: (day) => isSameDay(_selectedDate, day),
+            onDaySelected: (selectedDay, focusedDay) {
+              setState(() {
+                _selectedDate = selectedDay;
+              });
+            },
+            onFormatChanged: (format) {
+              setState(() {
+                _calendarFormat = format;
+              });
+            },
+            eventLoader: (day) {
+              String dateKey = day.toIso8601String().split('T')[0];
+              return _events[dateKey]
+                  ?.map((event) => event['title'])
+                  .toList() ?? [];
+            },
+            calendarStyle: CalendarStyle(
+              todayDecoration: BoxDecoration(
+                color: Colors.orange.shade100,
+                shape: BoxShape.circle,
+              ),
+              selectedDecoration: BoxDecoration(
+                color: Colors.orange,
+                shape: BoxShape.circle,
+              ),
+              markerDecoration: BoxDecoration(
+                color: Colors.orange,
+                shape: BoxShape.circle,
+              ),
+            ),
+          ),
+          const SizedBox(height: 20),
+          Expanded(
+            child: _buildEventList(),
+          ),
+        ],
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: _showAddEventDialog,
+        child: Icon(Icons.add),
+      ),
+    );
+  }
+
+  Widget _buildEventList() {
+    String dateKey = _selectedDate.toIso8601String().split('T')[0];
+    List events = _events[dateKey] ?? [];
+
+    if (events.isEmpty) {
+      return Center(
+        child: Text(
+          'Bugün için etkinlik yok.',
+          style: TextStyle(fontSize: 16, color: Colors.black),
+        ),
+      );
+    }
+
+    return ListView.builder(
+      itemCount: events.length,
+      itemBuilder: (context, index) {
+        var event = events[index];
+        return Card(
+          margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+          child: ListTile(
+            title: Text(event['title']),
+            subtitle: Text(
+              "Zaman: ${DateTime.parse(event['time']).hour.toString().padLeft(2, '0')}:${DateTime.parse(event['time']).minute.toString().padLeft(2, '0')}\n"
+                  "Katılımcılar: ${(event['participants'] as List<String>).join(', ')}\n"
+                  "Hobiler: ${(event['hobbies'] as List<String>).join(', ')}",
+            ),
+            trailing: IconButton(
+              icon: Icon(Icons.delete, color: Colors.indigo),
+              onPressed: () => _removeEvent(dateKey, index),
+            ),
+          ),
+        );
+      },
     );
   }
 }
