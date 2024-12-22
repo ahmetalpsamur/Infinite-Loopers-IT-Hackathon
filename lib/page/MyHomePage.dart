@@ -526,8 +526,14 @@ class _MyHomePageState extends State<MyHomePage> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   const ChatBubble(
-                    message: 'Merhaba! Size nasıl yardımcı olabilirim?',
+                    message:
+                        'Merhaba ben EKO-BOT! Size nasıl yardımcı olabilirim?',
                     isBot: true,
+                  ),
+                  const SizedBox(height: 10),
+                  const ChatBubble(
+                    message: 'Dersi ver lan bana',
+                    isBot: false,
                   ),
                   const SizedBox(height: 10),
                 ],
