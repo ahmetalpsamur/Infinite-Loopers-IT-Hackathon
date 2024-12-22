@@ -532,7 +532,8 @@ class _MyHomePageState extends State<MyHomePage> {
                   ),
                   const SizedBox(height: 10),
                   const ChatBubble(
-                    message: 'Dersi ver lan bana',
+                    message:
+                        'Bana CE216 dersine nasıl çalışacağımı söyler misin?',
                     isBot: false,
                   ),
                   const SizedBox(height: 10),

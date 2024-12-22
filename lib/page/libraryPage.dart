@@ -50,7 +50,7 @@ class _LibraryPageState extends State<LibraryPage> {
                 child: Column(
                   children: [
                     Text(
-                      'Library Occupancy Rate',
+                      'Kütüphane Doluluk Oranı',
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 22,
@@ -78,7 +78,7 @@ class _LibraryPageState extends State<LibraryPage> {
                       ),
                     ),
                     Text(
-                      '200 of 250 people',
+                      '200/250 dolu.',
                       style: TextStyle(fontSize: 16),
                     ),
                   ],
@@ -88,7 +88,7 @@ class _LibraryPageState extends State<LibraryPage> {
             SizedBox(height: 30),
 
             // Study Area Selection
-            SectionHeader(title: 'Study Area Selection'),
+            SectionHeader(title: 'Çalışma Alanları'),
             SizedBox(height: 10),
             Card(
               elevation: 4,
@@ -112,7 +112,7 @@ class _LibraryPageState extends State<LibraryPage> {
                           color: isSelected ? Colors.green : Colors.black,
                         ),
                       ),
-                      subtitle: Text('Group Study Area'),
+                      subtitle: Text('Grup Çalışma ALanları'),
                       onTap: () {
                         setState(() {
                           if (isSelected) {
@@ -130,7 +130,7 @@ class _LibraryPageState extends State<LibraryPage> {
             SizedBox(height: 30),
 
             // Empty Classrooms
-            SectionHeader(title: 'Empty Classrooms'),
+            SectionHeader(title: 'Boş Sınıflar'),
             SizedBox(height: 10),
             Card(
               elevation: 4,
@@ -154,7 +154,7 @@ class _LibraryPageState extends State<LibraryPage> {
                           color: isSelected ? Colors.green : Colors.black,
                         ),
                       ),
-                      subtitle: Text('Empty Class'),
+                      subtitle: Text('Boş Sınıf:'),
                       onTap: () {
                         setState(() {
                           if (isSelected) {
@@ -202,7 +202,6 @@ class _LibraryPageState extends State<LibraryPage> {
         return AlertDialog(
           title: Text('Randevu Onayı'),
           content: Text(
-            '${selectedSlots.join("\n")}\n\n'
             'Seçilen Sınıf:\n\n${selectedClasses.join("\n")}',
           ),
           actions: [
