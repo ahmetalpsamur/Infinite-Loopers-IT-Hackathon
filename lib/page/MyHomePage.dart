@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:infiniteloopers/ChatBubble.dart';
 import 'package:infiniteloopers/page/CalenderPage.dart';
+import 'package:infiniteloopers/page/Ekofit.dart';
 import 'package:infiniteloopers/page/MyProfilePage.dart';
 import 'package:infiniteloopers/page/OasisPage.dart';
 import 'package:infiniteloopers/page/libraryPage.dart';
@@ -14,7 +15,40 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   bool _isChatOpen = false;
+  bool _isExpanded = false;
+  bool _isHovered = false;
 
+  String selectedDay = '21';
+  List<Map<String, String>> events = [
+    {'time': '09:00 AM', 'description': 'Physics Class (M201)'},
+    {'time': '11:30 AM', 'description': 'Group Meeting (C406)'},
+    {'time': '02:00 PM', 'description': 'Lab Session (E021)'},
+  ];
+
+  // Event data for each day
+  final Map<String, List<Map<String, String>>> dayEvents = {
+    '21': [
+      {'time': '09:00 AM', 'description': 'Physics Class (M201)'},
+      {'time': '11:30 AM', 'description': 'Yapay Zeka Klüp Etkinliği (C406)'},
+      {'time': '02:00 PM', 'description': 'Lab Session (E021)'},
+    ],
+    '22': [
+      {'time': '10:00 AM', 'description': 'Math Class (M202)'},
+      {'time': '12:00 PM', 'description': 'Team Presentation (C407)'},
+    ],
+    '23': [
+      {'time': '09:30 AM', 'description': 'History Class (M203)'},
+      {'time': '01:00 PM', 'description': 'Workshop (E022)'},
+    ],
+    '24': [
+      {'time': '11:00 AM', 'description': 'Art Class (M204)'},
+      {'time': '03:00 PM', 'description': 'Seminar (C408)'},
+    ],
+    '25': [
+      {'time': '09:00 AM', 'description': 'Literature Class (M205)'},
+      {'time': '01:30 PM', 'description': 'Study Group (C409)'},
+    ],
+  };
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -34,6 +68,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   const SizedBox(height: 10),
                   _buildCalendar(),
                   const SizedBox(height: 20),
+                  _buildExpandableButton(),
                 ],
               ),
             ),
@@ -140,15 +175,20 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
       child: Column(
         children: [
-          // Calendar Row
+          // Calendar Row with GestureDetector to select a day
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              _buildCalendarDay('Cmt', '21', true),
-              _buildCalendarDay('Paz', '22', false),
-              _buildCalendarDay('Pzt', '23', false),
-              _buildCalendarDay('Sal', '24', false),
-              _buildCalendarDay('Çar', '25', false),
+              _buildCalendarDay(
+                  'Cmt', '21', selectedDay == '21', () => _onDaySelected('21')),
+              _buildCalendarDay(
+                  'Paz', '22', selectedDay == '22', () => _onDaySelected('22')),
+              _buildCalendarDay(
+                  'Pzt', '23', selectedDay == '23', () => _onDaySelected('23')),
+              _buildCalendarDay(
+                  'Sal', '24', selectedDay == '24', () => _onDaySelected('24')),
+              _buildCalendarDay(
+                  'Çar', '25', selectedDay == '25', () => _onDaySelected('25')),
             ],
           ),
           SizedBox(height: 20),
@@ -186,10 +226,39 @@ class _MyHomePageState extends State<MyHomePage> {
                 ),
               ),
               SizedBox(height: 10),
-              _buildEvent('09:00 AM', 'Physics Class'),
-              _buildEvent('11:30 AM', 'Group Meeting'),
-              _buildEvent('02:00 PM', 'Lab Session'),
+              // Show the events for the selected day
+              for (var event in dayEvents[selectedDay]!)
+                _buildEvent(event['time']!, event['description']!),
             ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  void _onDaySelected(String day) {
+    setState(() {
+      selectedDay = day;
+      events = dayEvents[day]!;
+    });
+  }
+
+  Widget _buildCalendarDay(
+      String day, String date, bool isSelected, VoidCallback onTap) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Column(
+        children: [
+          Text(day, style: TextStyle(color: Colors.grey)),
+          SizedBox(height: 5),
+          CircleAvatar(
+            backgroundColor: isSelected ? Colors.orange : Colors.grey[200],
+            child: Text(
+              date,
+              style: TextStyle(
+                color: isSelected ? Colors.white : Colors.black,
+              ),
+            ),
           ),
         ],
       ),
@@ -222,22 +291,158 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
-  Widget _buildCalendarDay(String day, String date, bool isSelected) {
-    return Column(
-      children: [
-        Text(day, style: TextStyle(color: Colors.grey)),
-        SizedBox(height: 5),
-        CircleAvatar(
-          backgroundColor: isSelected ? Colors.orange : Colors.grey[200],
-          child: Text(
-            date,
-            style: TextStyle(
-              color: isSelected ? Colors.white : Colors.black,
+  Widget _buildExpandableButton() {
+    return InkWell(
+      onTap: () {
+        setState(() {
+          _isExpanded = !_isExpanded;
+        });
+      },
+      child: Container(
+        width: double.infinity, // Button takes up the full width
+        padding:
+            EdgeInsets.symmetric(vertical: 18), // Increased padding for height
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            colors: [Colors.red, Colors.red.shade200], // Gradient color
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+          ),
+          borderRadius: BorderRadius.circular(30), // Rounded corners
+          boxShadow: [
+            BoxShadow(
+              color: Colors.grey.withOpacity(0.3),
+              blurRadius: 8,
+              offset: Offset(0, 6), // More shadow for depth
             ),
+          ],
+        ),
+        child: Column(
+          children: [
+            // Main button text
+            AnimatedDefaultTextStyle(
+              duration: const Duration(milliseconds: 300),
+              style: TextStyle(
+                color: Colors.white,
+                fontWeight: FontWeight.bold,
+                fontSize: _isExpanded ? 22 : 19, // Larger text when expanded
+              ),
+              child: Padding(
+                padding: EdgeInsets.symmetric(
+                    horizontal: 16.0, vertical: 12.0), // Increased padding
+                child: Container(
+                  child: Text(
+                    'Randevu Al',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+              ),
+            ),
+            if (_isExpanded) // Only show the options when expanded
+              Container(
+                color: Colors.white, // Set background to white
+                padding: const EdgeInsets.symmetric(
+                    vertical: 10.0, horizontal: 20.0),
+                child: Column(
+                  crossAxisAlignment:
+                      CrossAxisAlignment.start, // Left align the options
+                  children: [
+                    _buildOption(
+                        'EKOFIT Randevusu', _navigateToEkofitRandevusu),
+                    const Divider(
+                      color: Colors.grey, // Divider color
+                      thickness: 1, // Line thickness
+                      indent: 0, // Optional indent for the divider
+                      endIndent: 0, // Optional end indent for the divider
+                    ),
+                    _buildOption('Çalışma Alanı Randevusu',
+                        _navigateToCalismaAlaniRandevusu),
+                    const Divider(
+                      color: Colors.grey, // Divider color
+                      thickness: 1, // Line thickness
+                      indent: 0, // Optional indent for the divider
+                      endIndent: 0, // Optional end indent for the divider
+                    ),
+                    _buildOption('Cam Restoran Randevusu',
+                        _navigateToCamRestoranRandevusu),
+                  ],
+                ),
+              ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildOption(String text, Function onTap) {
+    return InkWell(
+      onTap: () => onTap(),
+      child: MouseRegion(
+        onEnter: (_) {
+          setState(() {
+            _isHovered = true;
+          });
+        },
+        onExit: (_) {
+          setState(() {
+            _isHovered = false;
+          });
+        },
+        child: Container(
+          padding: const EdgeInsets.symmetric(vertical: 12.0),
+          decoration: BoxDecoration(
+            color: Colors.transparent, // No background color
+            boxShadow: _isHovered
+                ? [
+                    BoxShadow(
+                      color: Colors.black.withOpacity(0.1),
+                      blurRadius: 10,
+                      offset: Offset(0, 4),
+                    ),
+                  ]
+                : [],
+          ),
+          child: Row(
+            children: [
+              Icon(Icons.circle, size: 8, color: Colors.black), // Mini dot icon
+              const SizedBox(width: 10),
+              Text(
+                text,
+                style: TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ],
           ),
         ),
-      ],
+      ),
     );
+  }
+
+// Navigation Functions
+  void _navigateToEkofitRandevusu() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+          builder: (context) => Ekofit()), // Navigate to Ekofit page
+    );
+  }
+
+  void _navigateToCalismaAlaniRandevusu() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+          builder: (context) => LibraryPage()), // Navigate to Ekofit page
+    );
+  }
+
+  void _navigateToCamRestoranRandevusu() {
+    // Use Navigator to go to the Cam Restoran Randevusu page
   }
 
   Widget _buildChatButtonOrWindow() {
@@ -247,14 +452,14 @@ class _MyHomePageState extends State<MyHomePage> {
       child: _isChatOpen
           ? _buildChatWindow()
           : FloatingActionButton(
-        onPressed: () {
-          setState(() {
-            _isChatOpen = true;
-          });
-        },
-        backgroundColor: Colors.orange,
-        child: const Icon(Icons.chat, color: Colors.white, size: 28),
-      ),
+              onPressed: () {
+                setState(() {
+                  _isChatOpen = true;
+                });
+              },
+              backgroundColor: Colors.orange,
+              child: const Icon(Icons.chat, color: Colors.white, size: 28),
+            ),
     );
   }
 
@@ -335,7 +540,8 @@ class _MyHomePageState extends State<MyHomePage> {
             padding: const EdgeInsets.all(8),
             decoration: BoxDecoration(
               color: Colors.grey[100],
-              borderRadius: const BorderRadius.vertical(bottom: Radius.circular(16)),
+              borderRadius:
+                  const BorderRadius.vertical(bottom: Radius.circular(16)),
             ),
             child: Row(
               children: [
