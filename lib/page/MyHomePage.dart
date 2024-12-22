@@ -252,8 +252,9 @@ class _MyHomePageState extends State<MyHomePage> {
             _isChatOpen = true;
           });
         },
-        backgroundColor: Colors.orange,
-        child: const Icon(Icons.chat, color: Colors.white, size: 28),
+        backgroundColor: Colors.white,
+        child:  Image.asset(
+            'lib/media/İzmir_Ekonomi_Üniversitesi_logo.png'),
       ),
     );
   }
@@ -321,7 +322,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   const ChatBubble(
-                    message: 'Merhaba! Size nasıl yardımcı olabilirim?',
+                    message: 'Merhaba ben EKO-BOT! Size nasıl yardımcı olabilirim?',
                     isBot: true,
                   ),
                   const SizedBox(height: 10),
