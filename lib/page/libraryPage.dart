@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 
 class LibraryPage extends StatefulWidget {
+  const LibraryPage({super.key});
+
   @override
   _LibraryPageState createState() => _LibraryPageState();
 }
 
 class _LibraryPageState extends State<LibraryPage> {
-  // Seçili çalışma alanlarını tutan bir Set
   final Set<String> selectedSlots = {};
   final Set<String> selectedClasses = {};
 
-  // Örnek çalışma saatleri
   final List<String> slots = [
     '25th Dec 2024 Time: 13:00 PM',
     '25th Dec 2024 Time: 14:00 PM',
@@ -19,7 +19,6 @@ class _LibraryPageState extends State<LibraryPage> {
     '25th Dec 2024 Time: 17:00 PM',
   ];
 
-  // Örnek boş sınıflar
   final List<String> emptyClasses = [
     'Classroom 101',
     'Classroom 202',
@@ -32,25 +31,14 @@ class _LibraryPageState extends State<LibraryPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Library'),
+        title: Text('Kütüphane'),
+        centerTitle: true,
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16.0),
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.center, // Align content center
           children: [
-            Text(
-              'Library Dashboard',
-              style: TextStyle(
-                fontSize: 26,
-                fontWeight: FontWeight.bold,
-                color: Colors.blueAccent,
-              ),
-            ),
-            SizedBox(height: 30),
-
-            // Kütüphane Doluluk Oranı
-            SectionHeader(title: 'Kütüphane Doluluk Oranı'),
             SizedBox(height: 10),
             Card(
               elevation: 4,
@@ -62,11 +50,13 @@ class _LibraryPageState extends State<LibraryPage> {
                 child: Column(
                   children: [
                     Text(
-                      'Kütüphane Doluluk Oranı',
+                      'Library Occupancy Rate',
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 22,
+                        color: Colors.deepOrange, // Dark orange
                       ),
+                      textAlign: TextAlign.center,
                     ),
                     SizedBox(height: 20),
                     SizedBox(
@@ -97,8 +87,8 @@ class _LibraryPageState extends State<LibraryPage> {
             ),
             SizedBox(height: 30),
 
-            // Çalışma Alanı Seçimi
-            SectionHeader(title: 'Kütüphane Çalışma Alanı'),
+            // Study Area Selection
+            SectionHeader(title: 'Study Area Selection'),
             SizedBox(height: 10),
             Card(
               elevation: 4,
@@ -122,7 +112,7 @@ class _LibraryPageState extends State<LibraryPage> {
                           color: isSelected ? Colors.green : Colors.black,
                         ),
                       ),
-                      subtitle: Text('Grup Çalışma Yeri'),
+                      subtitle: Text('Group Study Area'),
                       onTap: () {
                         setState(() {
                           if (isSelected) {
@@ -139,8 +129,8 @@ class _LibraryPageState extends State<LibraryPage> {
             ),
             SizedBox(height: 30),
 
-            // Boş Sınıflar
-            SectionHeader(title: 'Boş Sınıflar'),
+            // Empty Classrooms
+            SectionHeader(title: 'Empty Classrooms'),
             SizedBox(height: 10),
             Card(
               elevation: 4,
@@ -164,7 +154,7 @@ class _LibraryPageState extends State<LibraryPage> {
                           color: isSelected ? Colors.green : Colors.black,
                         ),
                       ),
-                      subtitle: Text('Boş Sınıf'),
+                      subtitle: Text('Empty Class'),
                       onTap: () {
                         setState(() {
                           if (isSelected) {
@@ -181,15 +171,14 @@ class _LibraryPageState extends State<LibraryPage> {
             ),
             SizedBox(height: 30),
 
-            // Randevu Al Butonu
+            // Book Appointment Button
             Center(
               child: ElevatedButton(
                 onPressed: selectedSlots.isEmpty && selectedClasses.isEmpty
                     ? null
                     : () {
-                  _showConfirmationDialog(context);
-                },
-                child: Text('Randevu Al'),
+                        _showConfirmationDialog(context);
+                      },
                 style: ElevatedButton.styleFrom(
                   padding: EdgeInsets.symmetric(horizontal: 32, vertical: 16),
                   shape: RoundedRectangleBorder(
@@ -197,6 +186,7 @@ class _LibraryPageState extends State<LibraryPage> {
                   ),
                   textStyle: TextStyle(fontSize: 18),
                 ),
+                child: Text('Randevu Al'),
               ),
             ),
           ],
@@ -205,7 +195,6 @@ class _LibraryPageState extends State<LibraryPage> {
     );
   }
 
-  // Onay diyaloğunu göstermek için bir yöntem
   void _showConfirmationDialog(BuildContext context) {
     showDialog(
       context: context,
@@ -213,13 +202,13 @@ class _LibraryPageState extends State<LibraryPage> {
         return AlertDialog(
           title: Text('Randevu Onayı'),
           content: Text(
-            'Seçtiğiniz çalışma saatleri:\n\n${selectedSlots.join("\n")}\n\n'
-                'Seçtiğiniz boş sınıflar:\n\n${selectedClasses.join("\n")}',
+            '${selectedSlots.join("\n")}\n\n'
+            'Seçilen Sınıf:\n\n${selectedClasses.join("\n")}',
           ),
           actions: [
             TextButton(
               onPressed: () => Navigator.of(context).pop(),
-              child: Text('İptal'),
+              child: Text('İptal Et'),
             ),
             ElevatedButton(
               onPressed: () {
@@ -234,11 +223,10 @@ class _LibraryPageState extends State<LibraryPage> {
     );
   }
 
-  // Başarılı işlem için Snackbar gösterimi
   void _showSuccessSnackbar(BuildContext context) {
     final snackBar = SnackBar(
       content: Text(
-        'Randevular başarıyla alındı!',
+        'Randevu Onaylandı.',
         style: TextStyle(color: Colors.white),
       ),
       backgroundColor: Colors.green,
@@ -246,7 +234,6 @@ class _LibraryPageState extends State<LibraryPage> {
     );
     ScaffoldMessenger.of(context).showSnackBar(snackBar);
 
-    // Seçimleri temizleme
     setState(() {
       selectedSlots.clear();
       selectedClasses.clear();
@@ -254,10 +241,10 @@ class _LibraryPageState extends State<LibraryPage> {
   }
 }
 
-// Bölüm Başlığı Widget'ı
+// Section Header Widget
 class SectionHeader extends StatelessWidget {
   final String title;
-  const SectionHeader({required this.title});
+  const SectionHeader({super.key, required this.title});
 
   @override
   Widget build(BuildContext context) {
@@ -266,8 +253,9 @@ class SectionHeader extends StatelessWidget {
       style: TextStyle(
         fontSize: 20,
         fontWeight: FontWeight.bold,
-        color: Colors.blueAccent,
+        color: Colors.deepOrange, // Dark orange
       ),
+      textAlign: TextAlign.center,
     );
   }
 }

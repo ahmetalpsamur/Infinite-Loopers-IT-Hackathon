@@ -33,9 +33,6 @@ class _MyHomePageState extends State<MyHomePage> {
                   const SizedBox(height: 10),
                   _buildCalendar(),
                   const SizedBox(height: 20),
-                  _buildSectionTitle('CAM Restoran'),
-                  const SizedBox(height: 10),
-                  _buildRestaurantCard(),
                 ],
               ),
             ),
@@ -107,7 +104,7 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   Widget _buildHeaderImage() {
-    return Container(
+    return SizedBox(
       width: double.infinity,
       child: Image.asset(
         'lib/media/slide1.png',
@@ -142,6 +139,7 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
       child: Column(
         children: [
+          // Calendar Row
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -152,8 +150,72 @@ class _MyHomePageState extends State<MyHomePage> {
               _buildCalendarDay('Çar', '25', false),
             ],
           ),
-          SizedBox(height: 10),
-          Text('Bugün için etkinlik yok.'),
+          SizedBox(height: 20),
+
+          // Cloud Icon with Temperature
+          Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              Icon(
+                Icons.cloud,
+                size: 32,
+                color: Colors.blue,
+              ),
+              SizedBox(width: 8),
+              Text(
+                '15°C',
+                style: TextStyle(
+                  fontSize: 24,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ],
+          ),
+          SizedBox(height: 20),
+
+          // Events Section
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                'Ajandam',
+                style: TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              SizedBox(height: 10),
+              _buildEvent('09:00 AM', 'Physics Class'),
+              _buildEvent('11:30 AM', 'Group Meeting'),
+              _buildEvent('02:00 PM', 'Lab Session'),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildEvent(String time, String description) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 4.0),
+      child: Row(
+        children: [
+          Icon(
+            Icons.event_note,
+            color: Colors.teal,
+          ),
+          SizedBox(width: 8),
+          Text(
+            time,
+            style: TextStyle(fontWeight: FontWeight.w500),
+          ),
+          SizedBox(width: 16),
+          Expanded(
+            child: Text(
+              description,
+              style: TextStyle(fontSize: 16),
+            ),
+          ),
         ],
       ),
     );
@@ -174,41 +236,6 @@ class _MyHomePageState extends State<MyHomePage> {
           ),
         ),
       ],
-    );
-  }
-
-  Widget _buildRestaurantCard() {
-    return Container(
-      padding: EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        gradient: LinearGradient(
-          colors: [Colors.pink, Colors.redAccent],
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-        ),
-        borderRadius: BorderRadius.circular(8),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            'Usta şeflerimizin özenle hazırladığı menümüzde, her damak zevkine uygun seçenekler bulunmaktadır.',
-            style: TextStyle(
-              color: Colors.white,
-              fontSize: 14,
-            ),
-          ),
-          SizedBox(height: 10),
-          ElevatedButton(
-            onPressed: () {},
-            style: ElevatedButton.styleFrom(
-              backgroundColor: Colors.white,
-              foregroundColor: Colors.redAccent,
-            ),
-            child: Text('Reservasyon Yap'),
-          ),
-        ],
-      ),
     );
   }
 

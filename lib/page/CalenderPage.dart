@@ -4,6 +4,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert';
 
 class CalendarPage extends StatelessWidget {
+  const CalendarPage({super.key});
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -19,6 +21,8 @@ class CalendarPage extends StatelessWidget {
 }
 
 class CalendarHomePage extends StatefulWidget {
+  const CalendarHomePage({super.key});
+
   @override
   _CalendarHomePageState createState() => _CalendarHomePageState();
 }
