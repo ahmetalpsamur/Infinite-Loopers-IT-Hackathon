@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:infiniteloopers/ChatBubble.dart';
 import 'package:infiniteloopers/page/CalenderPage.dart';
 import 'package:infiniteloopers/page/MyProfilePage.dart';
 import 'package:infiniteloopers/page/OasisPage.dart';
@@ -37,9 +38,9 @@ class _MyHomePageState extends State<MyHomePage> {
               ),
             ),
           ),
-          _buildChatButtonOrWindow(),
         ],
       ),
+      floatingActionButton: _buildChatButtonOrWindow(),
     );
   }
 
@@ -241,15 +242,127 @@ class _MyHomePageState extends State<MyHomePage> {
 
   Widget _buildChatButtonOrWindow() {
     return Positioned(
-      bottom: 20,
-      right: 20,
-      child: FloatingActionButton(
+      bottom: 16,
+      right: 16,
+      child: _isChatOpen
+          ? _buildChatWindow()
+          : FloatingActionButton(
         onPressed: () {
           setState(() {
-            _isChatOpen = !_isChatOpen;
+            _isChatOpen = true;
           });
         },
-        child: Icon(_isChatOpen ? Icons.close : Icons.chat),
+        backgroundColor: Colors.orange,
+        child: const Icon(Icons.chat, color: Colors.white, size: 28),
+      ),
+    );
+  }
+
+  Widget _buildChatWindow() {
+    return AnimatedContainer(
+      duration: const Duration(milliseconds: 300),
+      curve: Curves.easeInOut,
+      width: MediaQuery.of(context).size.width * 0.8,
+      height: MediaQuery.of(context).size.height * 0.6,
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(16),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.grey.withOpacity(0.5),
+            blurRadius: 15,
+            offset: const Offset(0, 6),
+          ),
+        ],
+      ),
+      child: Column(
+        children: [
+          // Header Bar
+          Container(
+            padding: const EdgeInsets.all(16),
+            decoration: const BoxDecoration(
+              color: Colors.orange,
+              borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
+            ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Row(
+                  children: [
+                    const Icon(Icons.chat_bubble, color: Colors.white),
+                    const SizedBox(width: 8),
+                    const Text(
+                      'Sohbet Botu',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 18,
+                      ),
+                    ),
+                  ],
+                ),
+                IconButton(
+                  icon: const Icon(Icons.close, color: Colors.white),
+                  onPressed: () {
+                    setState(() {
+                      _isChatOpen = false;
+                    });
+                  },
+                ),
+              ],
+            ),
+          ),
+
+          // Chat Messages Section
+          Expanded(
+            child: SingleChildScrollView(
+              padding: const EdgeInsets.all(16),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const ChatBubble(
+                    message: 'Merhaba! Size nasıl yardımcı olabilirim?',
+                    isBot: true,
+                  ),
+                  const SizedBox(height: 10),
+                ],
+              ),
+            ),
+          ),
+
+          // Input Section
+          Container(
+            padding: const EdgeInsets.all(8),
+            decoration: BoxDecoration(
+              color: Colors.grey[100],
+              borderRadius: const BorderRadius.vertical(bottom: Radius.circular(16)),
+            ),
+            child: Row(
+              children: [
+                Expanded(
+                  child: TextField(
+                    decoration: InputDecoration(
+                      hintText: 'Mesajınızı buraya yazın...',
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(8),
+                        borderSide: BorderSide.none,
+                      ),
+                      filled: true,
+                      fillColor: Colors.white,
+                    ),
+                  ),
+                ),
+                const SizedBox(width: 8),
+                IconButton(
+                  onPressed: () {
+                    // Send message action
+                  },
+                  icon: const Icon(Icons.send, color: Colors.orange),
+                ),
+              ],
+            ),
+          ),
+        ],
       ),
     );
   }
