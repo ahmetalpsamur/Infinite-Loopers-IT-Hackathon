@@ -5,6 +5,7 @@ import 'package:infiniteloopers/page/Ekofit.dart';
 import 'package:infiniteloopers/page/MyProfilePage.dart';
 import 'package:infiniteloopers/page/OasisPage.dart';
 import 'package:infiniteloopers/page/libraryPage.dart';
+import 'package:infiniteloopers/page/FriendsPage.dart';
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key});
@@ -69,6 +70,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   _buildCalendar(),
                   const SizedBox(height: 20),
                   _buildExpandableButton(),
+                  const SizedBox(height: 20),
                 ],
               ),
             ),
@@ -108,6 +110,15 @@ class _MyHomePageState extends State<MyHomePage> {
             () => Navigator.push(
               context,
               MaterialPageRoute(builder: (context) => OasisPage()),
+            ),
+          ),
+          _buildDrawerItem(
+            context,
+            Icons.update,
+            'Arkadaşlarım',
+            () => Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => FriendsPage()),
             ),
           ),
           _buildDrawerItem(
