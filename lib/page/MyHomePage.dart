@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:infiniteloopers/ChatBubble.dart';
 import 'package:infiniteloopers/page/CalenderPage.dart';
 import 'package:infiniteloopers/page/Ekofit.dart';
@@ -71,6 +72,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   const SizedBox(height: 20),
                   _buildExpandableButton(),
                   const SizedBox(height: 20),
+                  _buildNonExpandableButton(),
                 ],
               ),
             ),
@@ -389,6 +391,47 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
+  Widget _buildNonExpandableButton() {
+    return InkWell(
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => FriendsPage()),
+        );
+      },
+      child: Container(
+        width: double.infinity, // Button takes up the full width
+        padding:
+            EdgeInsets.symmetric(vertical: 18), // Increased padding for height
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            colors: [Colors.indigo, Colors.indigo.shade200], // Gradient color
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+          ),
+          borderRadius: BorderRadius.circular(30), // Rounded corners
+          boxShadow: [
+            BoxShadow(
+              color: Colors.grey.withOpacity(0.3),
+              blurRadius: 8,
+              offset: Offset(0, 6), // More shadow for depth
+            ),
+          ],
+        ),
+        child: Center(
+          child: Text(
+            'Arkadaşlarım', // Button text
+            style: TextStyle(
+              color: Colors.white,
+              fontSize: 20,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
   Widget _buildOption(String text, Function onTap) {
     return InkWell(
       onTap: () => onTap(),
@@ -462,14 +505,29 @@ class _MyHomePageState extends State<MyHomePage> {
       right: 16,
       child: _isChatOpen
           ? _buildChatWindow()
-          : FloatingActionButton(
-              onPressed: () {
-                setState(() {
-                  _isChatOpen = true;
-                });
-              },
-              backgroundColor: Colors.orange,
-              child: const Icon(Icons.chat, color: Colors.white, size: 28),
+          : Padding(
+              padding: const EdgeInsets.all(1.0),
+              child: Container(
+                decoration: BoxDecoration(
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withOpacity(0.2), // Shadow color
+                      blurRadius: 6.0, // Spread of the shadow
+                      offset: Offset(0, 3), // Positioning of the shadow
+                    ),
+                  ],
+                ),
+                child: FloatingActionButton(
+                  onPressed: () {
+                    setState(() {
+                      _isChatOpen = true;
+                    });
+                  },
+                  backgroundColor: Colors.white,
+                  child: Image.asset(
+                      "lib/media/İzmir_Ekonomi_Üniversitesi_logo.png"),
+                ),
+              ),
             ),
     );
   }

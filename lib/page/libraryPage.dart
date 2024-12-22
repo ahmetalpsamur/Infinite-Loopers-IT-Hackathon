@@ -112,7 +112,7 @@ class _LibraryPageState extends State<LibraryPage> {
                           color: isSelected ? Colors.green : Colors.black,
                         ),
                       ),
-                      subtitle: Text('Grup Çalışma ALanları'),
+                      subtitle: Text('Grup Çalışma Alanları'),
                       onTap: () {
                         setState(() {
                           if (isSelected) {

@@ -3,9 +3,8 @@ import 'loginpage.dart';
 
 class LandingPage extends StatelessWidget {
   final List<String> slideTexts = [
-    "MyIEU'ye Hoş Geldiniz!",
+    "NeoIEU",
     'İhtiyacınız Olan Bilgiler Yanınıza.',
-    'Lütfen Giriş Yapın.',
   ];
 
   LandingPage({super.key});
@@ -13,6 +12,7 @@ class LandingPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.orange, // Set background to orange
       body: PageView.builder(
         itemCount: slideTexts.length,
         itemBuilder: (context, index) {
@@ -22,9 +22,10 @@ class LandingPage extends StatelessWidget {
               Text(
                 slideTexts[index],
                 style: TextStyle(
-                    color: Colors.orange,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 30),
+                  color: Colors.white, // Change text color to white
+                  fontWeight: FontWeight.w900, // Bolder text
+                  fontSize: 40, // Bigger text
+                ),
                 textAlign: TextAlign.center,
               ),
               SizedBox(height: 20),

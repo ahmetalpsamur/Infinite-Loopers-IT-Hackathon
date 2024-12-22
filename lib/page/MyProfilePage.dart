@@ -10,18 +10,18 @@ class MyProfilePage extends StatefulWidget {
 
 class _MyProfilePageState extends State<MyProfilePage> {
   List<String> hobbies = [
-    "Reading",
-    "Gaming",
-    "Programming",
-    "Swimming",
-    "Traveling",
-    "Music",
-    "Photography",
-    "Cooking",
-    "Drawing",
-    "Sports",
-    "Writing",
-    "Dancing"
+    "Edebiyat",
+    "Oyun",
+    "Yazılım",
+    "Yüzme",
+    "Seyahat",
+    "Müzik",
+    "Fotoğrafçılık",
+    "Yemek",
+    "Çizim",
+    "Spor",
+    "Yazarlık",
+    "Dans"
   ];
 
   List<String> selectedHobbies = [];
@@ -48,7 +48,7 @@ class _MyProfilePageState extends State<MyProfilePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('My Profile'),
+        title: Text('Profilim'),
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16.0),
@@ -60,26 +60,26 @@ class _MyProfilePageState extends State<MyProfilePage> {
                 CircleAvatar(
                   radius: 50,
                   backgroundImage: AssetImage(
-                      'assets/profile_picture.png'), // Replace with your image asset
+                      'lib/media/İzmir_Ekonomi_Üniversitesi_logo.png'), // Replace with your image asset
                 ),
                 SizedBox(width: 16),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'John Doe',
+                      'EKO BOT',
                       style:
                           TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
                     ),
                     SizedBox(height: 4),
                     Text(
-                      'Computer Engineering Student',
+                      'Bilgisayar Mühendisliği',
                       style: TextStyle(fontSize: 16, color: Colors.grey[700]),
                     ),
                     SizedBox(height: 8),
                     ElevatedButton(
                       onPressed: () {},
-                      child: Text('Edit Profile'),
+                      child: Text('Profili Düzenle'),
                     ),
                   ],
                 ),
@@ -88,18 +88,18 @@ class _MyProfilePageState extends State<MyProfilePage> {
             SizedBox(height: 20),
             Divider(),
             Text(
-              'About Me',
+              'Hakkımda',
               style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
             ),
             SizedBox(height: 10),
             Text(
-              'Passionate about technology and innovation. Always eager to learn and take on new challenges.',
+              'Teknoloji benim tutkum.',
               style: TextStyle(fontSize: 16),
             ),
             SizedBox(height: 20),
             Divider(),
             Text(
-              'Hobbies',
+              'Hobilerim',
               style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
             ),
             SizedBox(height: 10),
@@ -135,7 +135,7 @@ class _MyProfilePageState extends State<MyProfilePage> {
                   _saveSelectedHobbies();
                   Navigator.pop(context);
                 },
-                child: Text('Save and Exit'),
+                child: Text('Kaydet ve Çık'),
               ),
             ),
           ],
